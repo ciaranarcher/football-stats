@@ -1,0 +1,12 @@
+{
+  "players": [
+    {
+      "id": "26c55a53-6b72-4cf4-88d0-3c7705d0f398",
+      "teamId": "6f959201-c159-4f60-ae77-a489e3609ccf",
+      "name": "Sebastian Archer",
+      "status": "active",
+      "createdAt": "2026-01-18T17:13:28.444Z",
+      "updatedAt": "2026-01-18T17:13:28.444Z"
+    }
+  ]
+}

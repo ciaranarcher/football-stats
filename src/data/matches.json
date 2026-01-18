@@ -1,0 +1,24 @@
+{
+  "matches": [
+    {
+      "id": "6a098f06-782e-41e6-b399-0279f17626f9",
+      "teamId": "6f959201-c159-4f60-ae77-a489e3609ccf",
+      "opponent": "Leixlip Utd FC",
+      "date": "2026-01-17",
+      "competition": "League",
+      "opponentScore": 4,
+      "goals": [
+        {
+          "id": "9bd2854b-0ca9-4148-8570-7446de559a68",
+          "matchId": "6a098f06-782e-41e6-b399-0279f17626f9",
+          "teamId": "6f959201-c159-4f60-ae77-a489e3609ccf",
+          "playerId": "26c55a53-6b72-4cf4-88d0-3c7705d0f398",
+          "minute": 38,
+          "type": "PENALTY"
+        }
+      ],
+      "createdAt": "2026-01-18T17:15:38.022Z",
+      "updatedAt": "2026-01-18T17:15:38.022Z"
+    }
+  ]
+}

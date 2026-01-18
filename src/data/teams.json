@@ -1,0 +1,12 @@
+{
+  "teams": [
+    {
+      "id": "6f959201-c159-4f60-ae77-a489e3609ccf",
+      "name": "Mount Merrion Youths FC",
+      "division": "U15 Premier",
+      "status": "active",
+      "createdAt": "2026-01-18T17:12:34.348Z",
+      "updatedAt": "2026-01-18T17:12:34.348Z"
+    }
+  ]
+}
