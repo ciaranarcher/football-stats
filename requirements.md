@@ -21,6 +21,7 @@
 - Capture basic match metadata:
   - Date.
   - Opponent name.
+  - Venue (home or away).
   - Optional competition or friendly flag.
   - Optional notes field for additional context (e.g. "penalty shootout", "cup final").
   - Optional manual result override (our score vs opponent score) for cases where automatic calculation doesn't apply.

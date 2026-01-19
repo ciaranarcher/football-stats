@@ -6,7 +6,7 @@ A comprehensive Next.js application for tracking football team statistics, playe
 
 - **Team Management**: Create and manage multiple football teams
 - **Player Management**: Add players to teams, track active/inactive status
-- **Match Recording**: Record match results with detailed goal information
+- **Match Recording**: Record match results with home/away venue and detailed goal information
 - **Statistics**: Automatically calculated team and player statistics
 - **Goal Tracking**: Track goals by player, including penalties and match minutes
 - **Responsive Design**: Mobile-friendly interface built with Tailwind CSS
@@ -116,6 +116,7 @@ football-stats/
 - Team ID
 - Opponent
 - Date
+- Venue (home/away)
 - Competition (optional)
 - Notes (optional)
 - Manual score override (optional)

@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { teamId, opponent, date, competition, notes, ourScore, opponentScore, goals } = body;
+    const { teamId, opponent, date, venue, competition, notes, ourScore, opponentScore, goals } = body;
 
     // Validation
     if (!teamId || typeof teamId !== 'string') {
@@ -57,6 +57,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!venue || (venue !== 'home' && venue !== 'away')) {
+      return NextResponse.json(
+        { error: 'venue must be either "home" or "away"' },
+        { status: 400 }
+      );
+    }
+
     // Validate goals array if provided
     if (goals && !Array.isArray(goals)) {
       return NextResponse.json(
@@ -69,6 +76,7 @@ export async function POST(request: NextRequest) {
       teamId,
       opponent: opponent.trim(),
       date,
+      venue,
       competition: competition?.trim() || undefined,
       notes: notes?.trim() || undefined,
       ourScore: ourScore !== undefined ? Number(ourScore) : undefined,

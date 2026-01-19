@@ -22,6 +22,7 @@ export function MatchForm({ teamId, players }: MatchFormProps) {
   const router = useRouter();
   const [opponent, setOpponent] = useState('');
   const [date, setDate] = useState('');
+  const [venue, setVenue] = useState<'home' | 'away'>('home');
   const [competition, setCompetition] = useState('');
   const [notes, setNotes] = useState('');
   const [opponentScore, setOpponentScore] = useState('');
@@ -68,6 +69,7 @@ export function MatchForm({ teamId, players }: MatchFormProps) {
           teamId,
           opponent,
           date,
+          venue,
           competition: competition || undefined,
           notes: notes || undefined,
           opponentScore: opponentScore ? parseInt(opponentScore, 10) : undefined,
@@ -113,6 +115,22 @@ export function MatchForm({ teamId, players }: MatchFormProps) {
             onChange={(e) => setDate(e.target.value)}
             required
           />
+
+          <div>
+            <label className="label" htmlFor="venue">
+              Venue
+            </label>
+            <select
+              id="venue"
+              value={venue}
+              onChange={(e) => setVenue(e.target.value as 'home' | 'away')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            >
+              <option value="home">Home</option>
+              <option value="away">Away</option>
+            </select>
+          </div>
 
           <Input
             id="competition"

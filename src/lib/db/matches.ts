@@ -71,7 +71,7 @@ export async function getMatchWithResultById(id: string): Promise<MatchWithResul
  * Create new match
  */
 export async function createMatch(
-  input: Pick<Match, 'teamId' | 'opponent' | 'date'> &
+  input: Pick<Match, 'teamId' | 'opponent' | 'date' | 'venue'> &
     Partial<Pick<Match, 'competition' | 'notes' | 'ourScore' | 'opponentScore'>> & {
       goals?: Omit<Goal, 'id' | 'matchId' | 'teamId'>[];
     }
@@ -85,6 +85,7 @@ export async function createMatch(
     teamId: input.teamId,
     opponent: input.opponent,
     date: input.date,
+    venue: input.venue,
     competition: input.competition,
     notes: input.notes,
     ourScore: input.ourScore,
@@ -112,7 +113,7 @@ export async function createMatch(
  */
 export async function updateMatch(
   id: string,
-  updates: Partial<Pick<Match, 'opponent' | 'date' | 'competition' | 'notes' | 'ourScore' | 'opponentScore' | 'goals'>>
+  updates: Partial<Pick<Match, 'opponent' | 'date' | 'venue' | 'competition' | 'notes' | 'ourScore' | 'opponentScore' | 'goals'>>
 ): Promise<Match | null> {
   const data = await readData<MatchesData>(MATCHES_FILE, { matches: [] });
   const matchIndex = data.matches.findIndex(m => m.id === id);

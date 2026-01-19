@@ -37,7 +37,7 @@ export async function PATCH(
 ) {
   try {
     const body = await request.json();
-    const { opponent, date, competition, notes, ourScore, opponentScore, goals } = body;
+    const { opponent, date, venue, competition, notes, ourScore, opponentScore, goals } = body;
 
     const updates: any = {};
 
@@ -59,6 +59,16 @@ export async function PATCH(
         );
       }
       updates.date = date;
+    }
+
+    if (venue !== undefined) {
+      if (venue !== 'home' && venue !== 'away') {
+        return NextResponse.json(
+          { error: 'venue must be either "home" or "away"' },
+          { status: 400 }
+        );
+      }
+      updates.venue = venue;
     }
 
     if (competition !== undefined) {

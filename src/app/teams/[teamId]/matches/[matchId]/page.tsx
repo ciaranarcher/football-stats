@@ -61,11 +61,18 @@ export default async function MatchPage({ params }: MatchPageProps) {
             <p className="text-gray-600 mt-1">
               {formatDate(match.date)}
               {match.competition && ` • ${match.competition}`}
+              {' • '}
+              <span className="capitalize font-medium">{match.venue}</span>
             </p>
           </div>
-          <span className={`badge text-lg px-4 py-2 ${resultColor[match.result]}`}>
-            {resultLabel[match.result]}
-          </span>
+          <div className="flex flex-col gap-2 items-end">
+            <span className={`badge text-lg px-4 py-2 ${resultColor[match.result]}`}>
+              {resultLabel[match.result]}
+            </span>
+            <span className="badge badge-gray uppercase">
+              {match.venue}
+            </span>
+          </div>
         </div>
       </div>
 

@@ -24,11 +24,16 @@ export function MatchCard({ match, teamId }: MatchCardProps) {
     <Link href={`/teams/${teamId}/matches/${match.id}`}>
       <div className="flex items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer last:border-0">
         <div className="flex items-center gap-4">
-          <span
-            className={`badge font-bold ${resultColor[match.result]}`}
-          >
-            {resultLabel[match.result]}
-          </span>
+          <div className="flex flex-col gap-1">
+            <span
+              className={`badge font-bold ${resultColor[match.result]}`}
+            >
+              {resultLabel[match.result]}
+            </span>
+            <span className="badge badge-gray text-xs uppercase">
+              {match.venue}
+            </span>
+          </div>
           <div>
             <p className="font-medium text-gray-900">vs {match.opponent}</p>
             <p className="text-sm text-gray-500">

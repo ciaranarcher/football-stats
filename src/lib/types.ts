@@ -25,6 +25,7 @@ export interface Match {
   teamId: string;
   opponent: string;
   date: string;            // ISO 8601
+  venue: 'home' | 'away';  // Match location
   competition?: string;
   notes?: string;
   ourScore?: number;       // Manual override
