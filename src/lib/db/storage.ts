@@ -67,6 +67,7 @@ export async function writeData<T>(filename: string, data: T): Promise<void> {
     const content = JSON.stringify(data, null, 2);
 
     if (USE_BLOB_STORAGE) {
+      console.info("using blob storage: " + process.env.BLOB_READ_WRITE_TOKEN);
       // Vercel Blob Storage (production with token)
       await put(filename, content, {
         access: 'public',
