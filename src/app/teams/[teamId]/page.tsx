@@ -14,14 +14,25 @@ interface TeamPageProps {
 }
 
 export default async function TeamPage({ params }: TeamPageProps) {
+  console.log('[TeamPage] Loading team page for teamId:', params.teamId);
+
   const team = await getTeamById(params.teamId);
 
   if (!team) {
+    console.log('[TeamPage] Team not found, returning 404');
     notFound();
   }
 
+  console.log('[TeamPage] Team loaded successfully:', team);
+  console.log('[TeamPage] Fetching matches for team...');
+
   const matches = await getMatchesWithResultsByTeamId(params.teamId);
+  console.log('[TeamPage] Matches loaded, count:', matches.length);
+
   const stats = calculateTeamStats(matches);
+  console.log('[TeamPage] Stats calculated:', stats);
+
+  console.log('[TeamPage] Rendering page...');
 
   return (
     <div>

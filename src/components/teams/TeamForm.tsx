@@ -18,6 +18,8 @@ export function TeamForm() {
     setError('');
     setLoading(true);
 
+    console.log('[TeamForm] Submitting form with:', { name, division });
+
     try {
       const response = await fetch('/api/teams', {
         method: 'POST',
@@ -27,15 +29,25 @@ export function TeamForm() {
         body: JSON.stringify({ name, division }),
       });
 
+      console.log('[TeamForm] Received response:', {
+        status: response.status,
+        ok: response.ok,
+      });
+
       if (!response.ok) {
         const data = await response.json();
+        console.error('[TeamForm] Error response:', data);
         throw new Error(data.error || 'Failed to create team');
       }
 
       const { team } = await response.json();
+      console.log('[TeamForm] Team created successfully:', team);
+      console.log('[TeamForm] Redirecting to:', `/teams/${team.id}`);
+
       router.push(`/teams/${team.id}`);
       router.refresh();
     } catch (err) {
+      console.error('[TeamForm] Error during submission:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
       setLoading(false);
     }

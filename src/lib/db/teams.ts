@@ -16,8 +16,20 @@ export async function getAllTeams(): Promise<Team[]> {
  * Get team by ID
  */
 export async function getTeamById(id: string): Promise<Team | null> {
+  console.log('[teams.ts getTeamById] Looking for team with id:', id);
+
   const data = await readData<TeamsData>(TEAMS_FILE, { teams: [] });
+  console.log('[teams.ts getTeamById] Total teams in storage:', data.teams.length);
+  console.log('[teams.ts getTeamById] Team IDs in storage:', data.teams.map(t => t.id));
+
   const team = data.teams.find(t => t.id === id);
+
+  if (team) {
+    console.log('[teams.ts getTeamById] Team found:', team);
+  } else {
+    console.log('[teams.ts getTeamById] Team NOT found with id:', id);
+  }
+
   return team || null;
 }
 
@@ -27,7 +39,11 @@ export async function getTeamById(id: string): Promise<Team | null> {
 export async function createTeam(
   input: Pick<Team, 'name' | 'division'>
 ): Promise<Team> {
+  console.log('[teams.ts createTeam] Starting team creation with input:', input);
+
+  console.log('[teams.ts createTeam] Reading existing teams data...');
   const data = await readData<TeamsData>(TEAMS_FILE, { teams: [] });
+  console.log('[teams.ts createTeam] Current teams count:', data.teams.length);
 
   const newTeam: Team = {
     id: generateId(),
@@ -38,8 +54,14 @@ export async function createTeam(
     updatedAt: getCurrentTimestamp(),
   };
 
+  console.log('[teams.ts createTeam] Generated new team:', newTeam);
+
   data.teams.push(newTeam);
+  console.log('[teams.ts createTeam] New teams count:', data.teams.length);
+
+  console.log('[teams.ts createTeam] Writing teams data...');
   await writeData(TEAMS_FILE, data);
+  console.log('[teams.ts createTeam] Write completed successfully');
 
   return newTeam;
 }
