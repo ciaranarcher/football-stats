@@ -1,4 +1,4 @@
-import { put, head } from '@vercel/blob';
+import { put, list } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -21,12 +21,25 @@ export async function readData<T>(filename: string, defaultValue: T): Promise<T>
     if (USE_BLOB_STORAGE) {
       // Vercel Blob Storage (production with token)
       try {
-        const blob = await head(`${filename}`);
-        if (!blob) return defaultValue;
+        console.log(`[Blob] Reading ${filename}...`);
+
+        // List blobs to find our file
+        const { blobs } = await list({ prefix: filename });
+
+        if (blobs.length === 0) {
+          console.log(`[Blob] ${filename} not found, returning default value`);
+          return defaultValue;
+        }
+
+        // Fetch the blob content
+        const blob = blobs[0];
+        console.log(`[Blob] Found ${filename} at ${blob.url}`);
         const response = await fetch(blob.url);
-        return await response.json();
+        const data = await response.json();
+        console.log(`[Blob] Successfully read ${filename}`);
+        return data;
       } catch (error) {
-        console.log(`Blob ${filename} not found, returning default value`);
+        console.error(`[Blob] Error reading ${filename}:`, error);
         return defaultValue;
       }
     } else if (IS_PRODUCTION) {
@@ -67,12 +80,15 @@ export async function writeData<T>(filename: string, data: T): Promise<void> {
     const content = JSON.stringify(data, null, 2);
 
     if (USE_BLOB_STORAGE) {
-      console.info("using blob storage: " + process.env.BLOB_READ_WRITE_TOKEN);
+      console.log(`[Blob] Writing to ${filename}...`);
+
       // Vercel Blob Storage (production with token)
-      await put(filename, content, {
+      const blob = await put(filename, content, {
         access: 'public',
         contentType: 'application/json',
       });
+
+      console.log(`[Blob] Successfully wrote ${filename} to ${blob.url}`);
     } else if (IS_PRODUCTION) {
       // In-memory storage (production without Blob token)
       console.warn(`⚠️  Using in-memory storage. Data will not persist. Set up Vercel Blob Storage for persistence.`);
