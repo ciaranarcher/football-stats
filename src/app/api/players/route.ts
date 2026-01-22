@@ -32,11 +32,16 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    console.log('[API /api/players POST] Received player creation request');
+
     const body = await request.json();
+    console.log('[API /api/players POST] Request body:', body);
+
     const { teamId, name, position, number } = body;
 
     // Validation
     if (!teamId || typeof teamId !== 'string') {
+      console.error('[API /api/players POST] Validation failed: teamId is required');
       return NextResponse.json(
         { error: 'teamId is required' },
         { status: 400 }
@@ -44,6 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      console.error('[API /api/players POST] Validation failed: name is required');
       return NextResponse.json(
         { error: 'name is required' },
         { status: 400 }
@@ -51,11 +57,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (number !== undefined && (typeof number !== 'number' || number < 0)) {
+      console.error('[API /api/players POST] Validation failed: invalid number');
       return NextResponse.json(
         { error: 'number must be a positive number' },
         { status: 400 }
       );
     }
+
+    console.log('[API /api/players POST] Validation passed, creating player...');
 
     const player = await createPlayer({
       teamId,
@@ -64,9 +73,11 @@ export async function POST(request: NextRequest) {
       number: number || undefined,
     });
 
+    console.log('[API /api/players POST] Player created successfully:', player);
+
     return NextResponse.json({ player }, { status: 201 });
   } catch (error) {
-    console.error('Error creating player:', error);
+    console.error('[API /api/players POST] Error creating player:', error);
     return NextResponse.json(
       { error: 'Failed to create player' },
       { status: 500 }

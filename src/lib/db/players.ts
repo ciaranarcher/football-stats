@@ -16,8 +16,16 @@ export async function getAllPlayers(): Promise<Player[]> {
  * Get players by team ID
  */
 export async function getPlayersByTeamId(teamId: string): Promise<Player[]> {
+  console.log('[players.ts getPlayersByTeamId] Looking for players with teamId:', teamId);
+
   const data = await readData<PlayersData>(PLAYERS_FILE, { players: [] });
-  return data.players.filter(p => p.teamId === teamId);
+  console.log('[players.ts getPlayersByTeamId] Total players in storage:', data.players.length);
+
+  const teamPlayers = data.players.filter(p => p.teamId === teamId);
+  console.log('[players.ts getPlayersByTeamId] Found', teamPlayers.length, 'players for team:', teamId);
+  console.log('[players.ts getPlayersByTeamId] Player names:', teamPlayers.map(p => p.name));
+
+  return teamPlayers;
 }
 
 /**
@@ -43,7 +51,11 @@ export async function getPlayerById(id: string): Promise<Player | null> {
 export async function createPlayer(
   input: Pick<Player, 'teamId' | 'name'> & Partial<Pick<Player, 'position' | 'number'>>
 ): Promise<Player> {
+  console.log('[players.ts createPlayer] Starting player creation with input:', input);
+
+  console.log('[players.ts createPlayer] Reading existing players data...');
   const data = await readData<PlayersData>(PLAYERS_FILE, { players: [] });
+  console.log('[players.ts createPlayer] Current players count:', data.players.length);
 
   const newPlayer: Player = {
     id: generateId(),
@@ -56,8 +68,14 @@ export async function createPlayer(
     updatedAt: getCurrentTimestamp(),
   };
 
+  console.log('[players.ts createPlayer] Generated new player:', newPlayer);
+
   data.players.push(newPlayer);
+  console.log('[players.ts createPlayer] New players count:', data.players.length);
+
+  console.log('[players.ts createPlayer] Writing players data...');
   await writeData(PLAYERS_FILE, data);
+  console.log('[players.ts createPlayer] Write completed successfully');
 
   return newPlayer;
 }

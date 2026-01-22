@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Player } from '@/lib/types';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -13,6 +14,7 @@ interface PlayerFormProps {
 }
 
 export function PlayerForm({ teamId, player, onSuccess, onCancel }: PlayerFormProps) {
+  const router = useRouter();
   const [name, setName] = useState(player?.name || '');
   const [position, setPosition] = useState(player?.position || '');
   const [number, setNumber] = useState(player?.number?.toString() || '');
@@ -23,6 +25,8 @@ export function PlayerForm({ teamId, player, onSuccess, onCancel }: PlayerFormPr
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    console.log('[PlayerForm] Submitting player:', { name, position, number, teamId, isEdit: !!player });
 
     try {
       const url = player ? `/api/players/${player.id}` : '/api/players';
@@ -35,6 +39,8 @@ export function PlayerForm({ teamId, player, onSuccess, onCancel }: PlayerFormPr
       if (position) body.position = position;
       if (number) body.number = parseInt(number, 10);
 
+      console.log('[PlayerForm] Sending request to:', url, 'with method:', method);
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -43,22 +49,35 @@ export function PlayerForm({ teamId, player, onSuccess, onCancel }: PlayerFormPr
         body: JSON.stringify(body),
       });
 
+      console.log('[PlayerForm] Response status:', response.status);
+
       if (!response.ok) {
         const data = await response.json();
+        console.error('[PlayerForm] Error response:', data);
         throw new Error(data.error || 'Failed to save player');
       }
 
+      const result = await response.json();
+      console.log('[PlayerForm] Player saved successfully:', result);
+
       if (onSuccess) {
+        console.log('[PlayerForm] Calling onSuccess callback');
         onSuccess();
       }
 
+      // Refresh the page to show the new player
+      console.log('[PlayerForm] Refreshing page...');
+      router.refresh();
+
       // Reset form if creating new player
       if (!player) {
+        console.log('[PlayerForm] Resetting form fields');
         setName('');
         setPosition('');
         setNumber('');
       }
     } catch (err) {
+      console.error('[PlayerForm] Error saving player:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
